@@ -1,9 +1,100 @@
+import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
+import { inputEmail } from '../actions';
 
 class Login extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      email: '',
+      password: '',
+      isValid: true,
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.validate = this.validate.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value,
+    },
+    () => { this.validate(); });
+  }
+
+  validate() {
+    const { password, email } = this.state;
+    const MAGIC_NUMBER = 6;
+    const REGEX = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/; // full stack overflow :)
+    const VALID_EMAIL = REGEX.test(String(email));
+    const VALID_PASSWORD = password.length >= MAGIC_NUMBER;
+    if (VALID_PASSWORD && VALID_EMAIL) {
+      this.setState({
+        isValid: false,
+      });
+    } else {
+      this.setState({
+        isValid: true,
+      });
+    }
+  }
+
+  handleClick() {
+    const { history, getEmail } = this.props;
+    const { email } = this.state;
+    getEmail(email);
+    history.push('./carteira');
+  }
+
   render() {
-    return <div>Login</div>;
+    const { email, password, isValid } = this.state;
+    return (
+      <form>
+        <fieldset>
+          <legend>Login</legend>
+          <label htmlFor="input-email">
+            Email:
+            <input
+              type="email"
+              name="email"
+              value={ email }
+              data-testid="email-input"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <label htmlFor="input-password">
+            Password:
+            <input
+              type="password"
+              name="password"
+              value={ password }
+              data-testid="password-input"
+              onChange={ this.handleChange }
+            />
+          </label>
+          <button
+            type="button"
+            disabled={ isValid }
+            onClick={ this.handleClick }
+          >
+            Entrar
+          </button>
+        </fieldset>
+      </form>
+    );
   }
 }
 
-export default Login;
+const mapDispatchToProps = (dispatch) => ({
+  getEmail: (state) => dispatch(inputEmail(state)),
+});
+
+Login.propTypes = {
+  getEmail: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
+};
+
+export default connect(null, mapDispatchToProps)(Login);
