@@ -1,7 +1,6 @@
 const APIURL = 'https://economia.awesomeapi.com.br/json/all';
 
-// talvez precise expecificar qual a moeda. fazer depois.
-export default getAPI = () => (
+const getAPI = () => (
   fetch(APIURL)
     .then((response) => (
       response
@@ -10,3 +9,5 @@ export default getAPI = () => (
           .resolve(json) : Promise.reject(json)))
     ))
 );
+
+export default getAPI;
