@@ -33,6 +33,7 @@ class Wallet extends React.Component {
     });
   }
 
+  // Gabi e Henrique ajudaram com a lógica do bracket notation para pegar o b.currency
   sumExpense() {
     const { expensesValue } = this.props;
     const ximira = expensesValue
@@ -67,23 +68,27 @@ class Wallet extends React.Component {
     const { currenciesTypes, id } = this.props;
     return (
       <>
-        <select
-          name="currency"
-          data-testid="currency-input"
-          onChange={ this.handleChange }
-        >
-          {currenciesTypes
-            .map((cur) => (cur !== 'USDT'
-              ? (
-                <option
-                  key={ cur }
-                  value={ cur }
-                  data-testid={ cur }
-                >
-                  { cur }
-                </option>)
-              : null))}
-        </select>
+        <label htmlFor="currency">
+          Moeda
+          <select
+            name="currency"
+            data-testid="currency-input"
+            id="currency"
+            onChange={ this.handleChange }
+          >
+            {currenciesTypes
+              .map((cur) => (cur !== 'USDT'
+                ? (
+                  <option
+                    key={ cur }
+                    value={ cur }
+                    data-testid={ cur }
+                  >
+                    { cur }
+                  </option>)
+                : null))}
+          </select>
+        </label>
         <select
           name="method"
           data-testid="method-input"
