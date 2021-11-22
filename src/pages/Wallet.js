@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import getAPI from '../services/getAPI';
-import { requestCurrencies, ximira } from '../actions';
+import { requestCurrencies, addExpense } from '../actions';
 
 class Wallet extends React.Component {
   constructor() {
@@ -13,10 +13,12 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
+      accExpense: 0,
     };
     this.renderSelect = this.renderSelect.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.sumExpense = this.sumExpense.bind(this);
   }
 
   componentDidMount() {
@@ -31,10 +33,21 @@ class Wallet extends React.Component {
     });
   }
 
+  sumExpense() {
+    const { expensesValue } = this.props;
+    const ximira = expensesValue
+      .reduce((a, b) => a + (Number(b.value) * Number(b.exchangeRate[b.currency].ask)),
+        0);
+    this.setState({
+      accExpense: ximira.toFixed(2),
+    });
+  }
+
   handleClick() {
-    console.log(this.state)
+    const { expense } = this.props;
     getAPI()
-      .then((result) => ximira({ ...this.state, result }));
+      .then((exchangeRate) => expense({ ...this.state, exchangeRate }))
+      .then(() => this.sumExpense());
   }
 
   // leo falou que poderia fazer uma função para renderizar uma tag
@@ -72,13 +85,13 @@ class Wallet extends React.Component {
 
   render() {
     const { userEmail } = this.props;
-    const { value } = this.state;
+    const { accExpense } = this.state;
     return (
       <>
         <header data-testid="email-field">
           {userEmail}
-          <span data-testid="total-field">0</span>
-          <span data-testid="header-currency-field">BRL</span>
+          <span data-testid="total-field">{ accExpense }</span>
+          <span data-testid="header-currency-field"> BRL</span>
         </header>
         <form>
           <fieldset>
@@ -88,7 +101,7 @@ class Wallet extends React.Component {
                 data-testid="value-input"
                 type="number"
                 name="value"
-                value={ value }
+                // value={  }
                 onChange={ this.handleChange }
               />
             </label>
@@ -114,17 +127,26 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = {
+  currencies: PropTypes.func.isRequired,
+  currenciesTypes: PropTypes.shape({
+    map: PropTypes.func,
+  }).isRequired,
+  expense: PropTypes.func.isRequired,
+  expensesValue: PropTypes.shape({
+    reduce: PropTypes.func,
+  }).isRequired,
   userEmail: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   userEmail: state.user.email,
   currenciesTypes: state.wallet.currencies,
+  expensesValue: state.wallet.expenses,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   currencies: (responseAPI) => dispatch(requestCurrencies(responseAPI)),
-  xibil: (state) => dispatch(ximira(state)),
+  expense: (state) => dispatch(addExpense(state)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);

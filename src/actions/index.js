@@ -14,12 +14,7 @@ export const requestCurrencies = (payload) => ({
   payload,
 });
 
-export const ximira = (payload) => ({
+export const addExpense = (payload) => ({
   type: ADD_EXPENSE,
   payload,
 });
-
-// export const inputExpense = (payload) => ({
-//   type: ADD_EXPENSE,
-//   payload,
-// });
