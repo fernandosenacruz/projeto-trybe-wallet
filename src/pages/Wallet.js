@@ -36,26 +36,42 @@ class Wallet extends React.Component {
   sumExpense() {
     const { expensesValue } = this.props;
     const ximira = expensesValue
-      .reduce((a, b) => a + (Number(b.value) * Number(b.exchangeRate[b.currency].ask)),
+      .reduce((a, b) => a + (Number(b.value) * Number(b.exchangeRates[b.currency].ask)),
         0);
     this.setState({
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
       accExpense: ximira.toFixed(2),
     });
   }
 
   handleClick() {
     const { expense } = this.props;
+    const { value, description, currency, method, tag } = this.state;
     getAPI()
-      .then((exchangeRate) => expense({ ...this.state, exchangeRate }))
+      .then((exchangeRates) => expense({
+        value,
+        description,
+        currency,
+        method,
+        tag,
+        exchangeRates }))
       .then(() => this.sumExpense());
   }
 
   // leo falou que poderia fazer uma função para renderizar uma tag
   renderSelect() {
-    const { currenciesTypes } = this.props;
+    const { currenciesTypes, id } = this.props;
     return (
       <>
-        <select name="currency" data-testid="currency-input">
+        <select
+          name="currency"
+          data-testid="currency-input"
+          onChange={ this.handleChange }
+        >
           {currenciesTypes
             .map((cur) => (cur !== 'USDT'
               ? (
@@ -68,12 +84,22 @@ class Wallet extends React.Component {
                 </option>)
               : null))}
         </select>
-        <select name="method" data-testid="method-input">
+        <select
+          name="method"
+          data-testid="method-input"
+          id={ id }
+          onChange={ this.handleChange }
+        >
           <option>Dinheiro</option>
           <option>Cartão de crédito</option>
           <option>Cartão de débito</option>
         </select>
-        <select name="tag" data-testid="tag-input">
+        <select
+          name="tag"
+          data-testid="tag-input"
+          id={ id }
+          onChange={ this.handleChange }
+        >
           <option>Alimentação</option>
           <option>Lazer</option>
           <option>Trabalho</option>
@@ -85,7 +111,7 @@ class Wallet extends React.Component {
 
   render() {
     const { userEmail } = this.props;
-    const { accExpense } = this.state;
+    const { accExpense, value, description } = this.state;
     return (
       <>
         <header data-testid="email-field">
@@ -101,7 +127,7 @@ class Wallet extends React.Component {
                 data-testid="value-input"
                 type="number"
                 name="value"
-                // value={  }
+                value={ value }
                 onChange={ this.handleChange }
               />
             </label>
@@ -111,7 +137,7 @@ class Wallet extends React.Component {
                 data-testid="description-input"
                 type="text"
                 name="description"
-                // value={  }
+                value={ description }
                 onChange={ this.handleChange }
               />
             </label>
@@ -127,6 +153,7 @@ class Wallet extends React.Component {
 }
 
 Wallet.propTypes = {
+  id: PropTypes.number.isRequired,
   currencies: PropTypes.func.isRequired,
   currenciesTypes: PropTypes.shape({
     map: PropTypes.func,
