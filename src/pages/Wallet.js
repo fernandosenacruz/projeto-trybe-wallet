@@ -37,7 +37,7 @@ class Wallet extends React.Component {
   // Gabi e Henrique ajudaram com a lógica do bracket notation para pegar o b.currency
   sumExpense() {
     const { expensesValue } = this.props;
-    const ximira = expensesValue
+    const CONVERTED_VALUE = expensesValue
       .reduce((a, b) => a + (Number(b.value) * Number(b.exchangeRates[b.currency].ask)),
         0);
     this.setState({
@@ -46,7 +46,7 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      accExpense: ximira.toFixed(2),
+      accExpense: CONVERTED_VALUE.toFixed(2),
     });
   }
 
@@ -115,25 +115,44 @@ class Wallet extends React.Component {
     );
   }
 
+  /* https://pt.stackoverflow.com/questions/308308/regex-para-pegar-palavra-entre-duas-palavras-ou
+  regex usado no name.match()
+  */
   renderTable() {
     const { expensesValue } = this.props;
-    const { value, description, currency, method, tag } = expensesValue;
     return (
       <table>
-        <tr>
-          <th>Descrição</th>
-          <th>Tag</th>
-          <th>Método de pagamento</th>
-          <th>Valor</th>
-          <th>Moeda</th>
-          <th>Câmbio utilizado</th>
-          <th>Valor convertido</th>
-          <th>Moeda de conversão</th>
-          <th>Editar/Excluir</th>
-        </tr>
-        <tr>
-          <td>xelo</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Descrição</th>
+            <th>Tag</th>
+            <th>Método de pagamento</th>
+            <th>Valor</th>
+            <th>Moeda</th>
+            <th>Câmbio utilizado</th>
+            <th>Valor convertido</th>
+            <th>Moeda de conversão</th>
+            <th>Editar/Excluir</th>
+          </tr>
+        </thead>
+        <tbody>
+          {expensesValue
+            .map((exp) => (
+              <tr key={ exp.id }>
+                <td>{ exp.description }</td>
+                <td>{ exp.tag }</td>
+                <td>{ exp.method }</td>
+                <td>{ exp.value }</td>
+                <td>{ exp.exchangeRates[exp.currency].name}</td>
+                <td>{ Number(exp.exchangeRates[exp.currency].ask).toFixed(2) }</td>
+                <td>
+                  { Number(exp.value)
+                  * Number(exp.exchangeRates[exp.currency].ask)}
+                </td>
+                <td>Real</td>
+              </tr>
+            ))}
+        </tbody>
       </table>
     );
   }
@@ -190,6 +209,7 @@ Wallet.propTypes = {
   }).isRequired,
   expense: PropTypes.func.isRequired,
   expensesValue: PropTypes.shape({
+    map: PropTypes.func,
     reduce: PropTypes.func,
   }).isRequired,
   userEmail: PropTypes.string.isRequired,
