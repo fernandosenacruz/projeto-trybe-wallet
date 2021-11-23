@@ -16,6 +16,7 @@ class Wallet extends React.Component {
       accExpense: 0,
     };
     this.renderSelect = this.renderSelect.bind(this);
+    this.renderTable = this.renderTable.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.sumExpense = this.sumExpense.bind(this);
@@ -114,6 +115,29 @@ class Wallet extends React.Component {
     );
   }
 
+  renderTable() {
+    const { expensesValue } = this.props;
+    const { value, description, currency, method, tag } = expensesValue;
+    return (
+      <table>
+        <tr>
+          <th>Descrição</th>
+          <th>Tag</th>
+          <th>Método de pagamento</th>
+          <th>Valor</th>
+          <th>Moeda</th>
+          <th>Câmbio utilizado</th>
+          <th>Valor convertido</th>
+          <th>Moeda de conversão</th>
+          <th>Editar/Excluir</th>
+        </tr>
+        <tr>
+          <td>xelo</td>
+        </tr>
+      </table>
+    );
+  }
+
   render() {
     const { userEmail } = this.props;
     const { accExpense, value, description } = this.state;
@@ -152,6 +176,7 @@ class Wallet extends React.Component {
             </button>
           </fieldset>
         </form>
+        { this.renderTable() }
       </>
     );
   }
