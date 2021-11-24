@@ -3,7 +3,7 @@ export const INPUT_EMAIL = 'INPUT_EMAIL';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
 export const DESCRIPTION_EXPENSE = 'DESCRIPTION_EXPENSE';
 export const FETCH_EXCHANGE_RATES = 'FETCH_EXCHANGE_RATES';
-export const REFRESH = 'REFRESH';
+export const DELETE_EXPENSE = 'DELETE_EXPENSE';
 
 export const inputEmail = (payload) => ({
   type: INPUT_EMAIL,
@@ -20,7 +20,7 @@ export const addExpense = (payload) => ({
   payload,
 });
 
-export const refreshExpense = (payload) => ({
-  type: REFRESH,
+export const deleteExpense = (payload) => ({
+  type: DELETE_EXPENSE,
   payload,
 });

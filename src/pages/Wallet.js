@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import getAPI from '../services/getAPI';
-import { requestCurrencies, addExpense } from '../actions';
+import { requestCurrencies, addExpense, deleteExpense } from '../actions';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -13,7 +13,7 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      accExpense: 0,
+      // accExpense: 0,
     };
     this.renderSelect = this.renderSelect.bind(this);
     this.renderTable = this.renderTable.bind(this);
@@ -41,14 +41,7 @@ class Wallet extends React.Component {
     const CONVERTED_VALUE = expensesValue
       .reduce((a, b) => a + (Number(b.value) * Number(b.exchangeRates[b.currency].ask)),
         0);
-    this.setState({
-      value: '',
-      description: '',
-      currency: 'USD',
-      method: 'Dinheiro',
-      tag: 'Alimentação',
-      accExpense: CONVERTED_VALUE.toFixed(2),
-    });
+    return CONVERTED_VALUE.toFixed(2);
   }
 
   handleClick() {
@@ -61,14 +54,22 @@ class Wallet extends React.Component {
         currency,
         method,
         tag,
-        exchangeRates }))
-      .then(() => this.sumExpense());
+        exchangeRates }));
+    // .then(() => this.sumExpense());
+    this.setState({
+      value: '',
+      description: '',
+      currency: 'USD',
+      method: 'Dinheiro',
+      tag: 'Alimentação',
+      // accExpense: CONVERTED_VALUE.toFixed(2),
+    });
   }
 
   deleteRow(id) {
-    const { expensesValue } = this.props;
-    expensesValue.splice(id, 1);
-    return expensesValue;
+    const { deleteXibil } = this.props;
+    deleteXibil(id);
+    this.setState({});
   }
 
   // leo falou que poderia fazer uma função para renderizar uma tag
@@ -147,7 +148,7 @@ class Wallet extends React.Component {
                 <td>{ exp.tag }</td>
                 <td>{ exp.method }</td>
                 <td>{ exp.value }</td>
-                <td>{ exp.exchangeRates[exp.currency].name.match(/.*\//)}</td>
+                <td>{ exp.exchangeRates[exp.currency].name}</td>
                 <td>{ Number(exp.exchangeRates[exp.currency].ask).toFixed(2) }</td>
                 <td>
                   { (Number(exp.value)
@@ -172,12 +173,12 @@ class Wallet extends React.Component {
 
   render() {
     const { userEmail } = this.props;
-    const { accExpense, value, description } = this.state;
+    const { value, description } = this.state;
     return (
       <>
         <header data-testid="email-field">
           {userEmail}
-          <span data-testid="total-field">{ accExpense }</span>
+          <span data-testid="total-field">{ this.sumExpense() }</span>
           <span data-testid="header-currency-field"> BRL</span>
         </header>
         <form>
@@ -227,6 +228,7 @@ Wallet.propTypes = {
     reduce: PropTypes.func,
   }).isRequired,
   userEmail: PropTypes.string.isRequired,
+  deleteXibil: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -238,6 +240,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   currencies: (responseAPI) => dispatch(requestCurrencies(responseAPI)),
   expense: (state) => dispatch(addExpense(state)),
+  deleteXibil: (id) => dispatch(deleteExpense(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
