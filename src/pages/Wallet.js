@@ -5,8 +5,8 @@ import getAPI from '../services/getAPI';
 import { requestCurrencies, addExpense } from '../actions';
 
 class Wallet extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       value: '',
       description: '',
@@ -20,6 +20,7 @@ class Wallet extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.sumExpense = this.sumExpense.bind(this);
+    this.deleteRow = this.deleteRow.bind(this);
   }
 
   componentDidMount() {
@@ -62,6 +63,12 @@ class Wallet extends React.Component {
         tag,
         exchangeRates }))
       .then(() => this.sumExpense());
+  }
+
+  deleteRow(id) {
+    const { expensesValue } = this.props;
+    expensesValue.splice(id, 1);
+    return expensesValue;
   }
 
   // leo falou que poderia fazer uma função para renderizar uma tag
@@ -115,9 +122,6 @@ class Wallet extends React.Component {
     );
   }
 
-  /* https://pt.stackoverflow.com/questions/308308/regex-para-pegar-palavra-entre-duas-palavras-ou
-  regex usado no name.match()
-  */
   renderTable() {
     const { expensesValue } = this.props;
     return (
@@ -138,18 +142,27 @@ class Wallet extends React.Component {
         <tbody>
           {expensesValue
             .map((exp) => (
-              <tr key={ exp.id }>
+              <tr key={ exp.index }>
                 <td>{ exp.description }</td>
                 <td>{ exp.tag }</td>
                 <td>{ exp.method }</td>
                 <td>{ exp.value }</td>
-                <td>{ exp.exchangeRates[exp.currency].name}</td>
+                <td>{ exp.exchangeRates[exp.currency].name.match(/.*\//)}</td>
                 <td>{ Number(exp.exchangeRates[exp.currency].ask).toFixed(2) }</td>
                 <td>
-                  { Number(exp.value)
-                  * Number(exp.exchangeRates[exp.currency].ask)}
+                  { (Number(exp.value)
+                  * Number(exp.exchangeRates[exp.currency].ask)).toFixed(2)}
                 </td>
                 <td>Real</td>
+                <td>
+                  <button
+                    data-testid="delete-btn"
+                    onClick={ () => this.deleteRow(exp.id) }
+                    type="button"
+                  >
+                    Excluir
+                  </button>
+                </td>
               </tr>
             ))}
         </tbody>
@@ -209,6 +222,7 @@ Wallet.propTypes = {
   }).isRequired,
   expense: PropTypes.func.isRequired,
   expensesValue: PropTypes.shape({
+    splice: PropTypes.func,
     map: PropTypes.func,
     reduce: PropTypes.func,
   }).isRequired,
