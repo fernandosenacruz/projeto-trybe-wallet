@@ -13,7 +13,6 @@ class Wallet extends React.Component {
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      // accExpense: 0,
     };
     this.renderSelect = this.renderSelect.bind(this);
     this.renderTable = this.renderTable.bind(this);
@@ -47,29 +46,20 @@ class Wallet extends React.Component {
   handleClick() {
     const { expense } = this.props;
     const { value, description, currency, method, tag } = this.state;
-    getAPI()
-      .then((exchangeRates) => expense({
-        value,
-        description,
-        currency,
-        method,
-        tag,
-        exchangeRates }));
-    // .then(() => this.sumExpense());
+    expense({ value, description, currency, method, tag });
     this.setState({
       value: '',
       description: '',
       currency: 'USD',
       method: 'Dinheiro',
       tag: 'Alimentação',
-      // accExpense: CONVERTED_VALUE.toFixed(2),
     });
   }
 
   deleteRow(id) {
     const { deleteXibil } = this.props;
     deleteXibil(id);
-    this.setState({});
+    this.forceUpdate();
   }
 
   // leo falou que poderia fazer uma função para renderizar uma tag
@@ -143,7 +133,7 @@ class Wallet extends React.Component {
         <tbody>
           {expensesValue
             .map((exp) => (
-              <tr key={ exp.index }>
+              <tr key={ exp.index + exp.description }>
                 <td>{ exp.description }</td>
                 <td>{ exp.tag }</td>
                 <td>{ exp.method }</td>

@@ -1,3 +1,5 @@
+import getAPI from '../services/getAPI';
+
 // Coloque aqui suas actions
 export const INPUT_EMAIL = 'INPUT_EMAIL';
 export const ADD_EXPENSE = 'ADD_EXPENSE';
@@ -15,10 +17,17 @@ export const requestCurrencies = (payload) => ({
   payload,
 });
 
-export const addExpense = (payload) => ({
+export const saveExpense = (payload) => ({
   type: ADD_EXPENSE,
   payload,
 });
+
+export const addExpense = (payload) => (dispath) => {
+  getAPI().then((exchangeRates) => {
+    payload.exchangeRates = exchangeRates;
+    dispath(saveExpense(payload));
+  });
+};
 
 export const deleteExpense = (payload) => ({
   type: DELETE_EXPENSE,
