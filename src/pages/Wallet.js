@@ -133,7 +133,7 @@ class Wallet extends React.Component {
         <tbody>
           {expensesValue
             .map((exp) => (
-              <tr key={ exp.index + exp.description }>
+              <tr key={ exp.id + exp.description }>
                 <td>{ exp.description }</td>
                 <td>{ exp.tag }</td>
                 <td>{ exp.method }</td>
@@ -208,15 +208,9 @@ class Wallet extends React.Component {
 Wallet.propTypes = {
   id: PropTypes.number.isRequired,
   currencies: PropTypes.func.isRequired,
-  currenciesTypes: PropTypes.shape({
-    map: PropTypes.func,
-  }).isRequired,
+  currenciesTypes: PropTypes.arrayOf(PropTypes.string).isRequired,
   expense: PropTypes.func.isRequired,
-  expensesValue: PropTypes.shape({
-    splice: PropTypes.func,
-    map: PropTypes.func,
-    reduce: PropTypes.func,
-  }).isRequired,
+  expensesValue: PropTypes.arrayOf(Object).isRequired,
   userEmail: PropTypes.string.isRequired,
   deleteXibil: PropTypes.func.isRequired,
 };
