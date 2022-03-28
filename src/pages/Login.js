@@ -9,7 +9,7 @@ class Login extends React.Component {
     this.state = {
       email: '',
       password: '',
-      isValid: true,
+      isValid: false,
     };
     this.handleChange = this.handleChange.bind(this);
     this.validate = this.validate.bind(this);
@@ -26,16 +26,16 @@ class Login extends React.Component {
   validate() {
     const { password, email } = this.state;
     const MAGIC_NUMBER = 6;
-    const REGEX = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/; // full stack overflow :)
+    const REGEX = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/; // full stack overflow :) https://pt.stackoverflow.com/questions/1386/express%C3%A3o-regular-para-valida%C3%A7%C3%A3o-de-e-mail
     const VALID_EMAIL = REGEX.test(String(email));
     const VALID_PASSWORD = password.length >= MAGIC_NUMBER;
     if (VALID_PASSWORD && VALID_EMAIL) {
       this.setState({
-        isValid: false,
+        isValid: true,
       });
     } else {
       this.setState({
-        isValid: true,
+        isValid: false,
       });
     }
   }
@@ -75,7 +75,7 @@ class Login extends React.Component {
           </label>
           <button
             type="button"
-            disabled={ isValid }
+            disabled={ !isValid }
             onClick={ this.handleClick }
           >
             Entrar

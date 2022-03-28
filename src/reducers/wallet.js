@@ -19,7 +19,7 @@ const wallet = (state = INITIAL_STATE, action) => {
       expenses: [...state.expenses, { ...action.payload, id: state.expenses.length }],
     };
   case DELETE_EXPENSE:
-    // state.expenses.splice(action.id, 1);
+    // state.expenses.splice(action.id, 1); Alexsandro Xavier sugeriu usar filter
     return {
       ...state,
       expenses: state.expenses.filter((expense) => expense.id !== action.payload),

@@ -57,9 +57,8 @@ class Wallet extends React.Component {
   }
 
   deleteRow(id) {
-    const { deleteXibil } = this.props;
-    deleteXibil(id);
-    this.forceUpdate();
+    const { deleteExp } = this.props;
+    deleteExp(id);
   }
 
   // leo falou que poderia fazer uma função para renderizar uma tag
@@ -115,6 +114,7 @@ class Wallet extends React.Component {
 
   renderTable() {
     const { expensesValue } = this.props;
+    // fazer uma função para somar e exibir os valores das linhas 142 e 144
     return (
       <table>
         <thead>
@@ -212,7 +212,7 @@ Wallet.propTypes = {
   expense: PropTypes.func.isRequired,
   expensesValue: PropTypes.arrayOf(Object).isRequired,
   userEmail: PropTypes.string.isRequired,
-  deleteXibil: PropTypes.func.isRequired,
+  deleteExp: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -224,7 +224,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   currencies: (responseAPI) => dispatch(requestCurrencies(responseAPI)),
   expense: (state) => dispatch(addExpense(state)),
-  deleteXibil: (id) => dispatch(deleteExpense(id)),
+  deleteExp: (id) => dispatch(deleteExpense(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Wallet);
