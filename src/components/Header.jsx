@@ -10,7 +10,7 @@ export default function Header() {
     >
       <Box sx={{ 
         textAlign: 'center',
-        fontSize: {xs:'30px', md:'50px'},
+        fontSize: {xs: 'medium', md: 'xx-large'},
         m: 'auto',
         fontWeight: 'bold',
         fontStyle: 'oblique',
