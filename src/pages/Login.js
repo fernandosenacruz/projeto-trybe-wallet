@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { inputEmail } from '../actions';
+import Header from '../components/Header';
 
 class Login extends React.Component {
   constructor() {
@@ -50,38 +51,41 @@ class Login extends React.Component {
   render() {
     const { email, password, isValid } = this.state;
     return (
-      <form>
-        <fieldset>
-          <legend>Login</legend>
-          <label htmlFor="input-email">
-            Email:
-            <input
-              type="email"
-              name="email"
-              value={ email }
-              data-testid="email-input"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <label htmlFor="input-password">
-            Password:
-            <input
-              type="password"
-              name="password"
-              value={ password }
-              data-testid="password-input"
-              onChange={ this.handleChange }
-            />
-          </label>
-          <button
-            type="button"
-            disabled={ !isValid }
-            onClick={ this.handleClick }
-          >
-            Entrar
-          </button>
-        </fieldset>
-      </form>
+      <>
+        <Header/>      
+        <form>
+          <fieldset>
+            <legend>Login</legend>
+            <label htmlFor="input-email">
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={ email }
+                data-testid="email-input"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <label htmlFor="input-password">
+              Password:
+              <input
+                type="password"
+                name="password"
+                value={ password }
+                data-testid="password-input"
+                onChange={ this.handleChange }
+              />
+            </label>
+            <button
+              type="button"
+              disabled={ !isValid }
+              onClick={ this.handleClick }
+            >
+              Entrar
+            </button>
+          </fieldset>
+        </form>
+      </>
     );
   }
 }
