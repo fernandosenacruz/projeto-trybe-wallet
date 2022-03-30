@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
+import {
+  Grid,
+  TextField,
+  Button,
+} from '@mui/material';
 import { connect } from 'react-redux';
 import { inputEmail } from '../actions';
 import Header from '../components/Header';
@@ -56,55 +57,45 @@ class Login extends React.Component {
     const { email, password, isValid } = this.state;
     return (
       <>
-        <Header/>
-        <Box
-          mt={2}
-          mb={3}
-          component="form"
-          sx={{
-            '& .MuiTextField-root': { 
-              display: 'flex',
-              m: 3,
-              width: { xs: 'small', md: 'medium'},
-              justifyContent: 'center' },
-          }}
-          noValidate
-          autoComplete="off"
-      >
-        <label htmlFor="input-email">
-          <TextField
-            error
-            name="email"
-            type="email"
-            id="outlined-error"
-            label="Email"
-            value={email}
-            onChange={ this.handleChange }
-          />
-        </label>
-        <label htmlFor="input-password">
-          <TextField
-            error
-            name="password"
-            type="password"
-            id="filled-error"
-            label="Password"
-            value={password}
-            variant="filled"
-            onChange={ this.handleChange }
-          />
-        </label>
-        <Stack direction="row" spacing={2}>
-          <Button 
+        <Header />
+        <Grid container justify="center" alignItems="center" direction="column">
+          <Grid item xs={12}>
+            <TextField
+              htmlFor="input-email"
+              fullwidth
+              error
+              name="email"
+              type="email"
+              id="outlined-error"
+              label="Email"
+              value={ email }
+              onChange={ this.handleChange }
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              htmlFor="input-password"
+              fullwidth
+              error
+              name="password"
+              type="password"
+              id="filled-error"
+              label="Password"
+              value={ password }
+              variant="filled"
+              onChange={ this.handleChange }
+            />
+          </Grid>
+          <Button
             variant="outlined"
             type="button"
             disabled={ !isValid }
             onClick={ this.handleClick }
-            sx={{ alignItems: 'center' }}
-            >
-              Entrar</Button>
-        </Stack>                
-      </Box>
+            sx={ { alignItems: 'center' } }
+          >
+            Entrar
+          </Button>
+        </Grid>
       </>
     );
   }
