@@ -39,3 +39,20 @@
     transform: rotate(360deg);
   }
 }
+
+.ximira {
+  align-items: center;
+  background-color: #f59e6c;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.table {
+  border: 1px solid rgb(148, 245, 109);
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 100%;
+}

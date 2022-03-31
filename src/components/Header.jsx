@@ -11,12 +11,15 @@ export default function Header() {
       <Box
         sx={ {
           textAlign: 'center',
-          fontSize: { xs: 'medium', md: 'xx-large' },
+          fontSize: { xs: 'large', md: 'xx-large' },
           m: 'auto',
+          mb: '2rem',
           fontWeight: 'bold',
           fontStyle: 'oblique',
-          letterSpacing: 3,
+          letterSpacing: 4,
         } }
+        xs={ 8 }
+        md={ 12 }
       >
         Trybe Wallet
       </Box>

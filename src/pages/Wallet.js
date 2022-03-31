@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import getAPI from '../services/getAPI';
 import { requestCurrencies, addExpense, deleteExpense } from '../actions';
+import getAPI from '../services/getAPI';
+import Header from '../components/Header';
+import '../App.css';
 
 class Wallet extends React.Component {
   constructor(props) {
@@ -116,7 +118,7 @@ class Wallet extends React.Component {
     const { expensesValue } = this.props;
     // fazer uma função para somar e exibir os valores das linhas 142 e 144
     return (
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>Descrição</th>
@@ -166,12 +168,13 @@ class Wallet extends React.Component {
     const { value, description } = this.state;
     return (
       <>
-        <header data-testid="email-field">
+        <Header />
+        <main data-testid="email-field">
           {userEmail}
           <span data-testid="total-field">{ this.sumExpense() }</span>
           <span data-testid="header-currency-field"> BRL</span>
-        </header>
-        <form>
+        </main>
+        <form className="ximira">
           <fieldset>
             <label htmlFor="input-expense">
               Despesa

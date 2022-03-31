@@ -59,7 +59,7 @@ class Login extends React.Component {
       <>
         <Header />
         <Grid container justify="center" alignItems="center" direction="column">
-          <Grid item xs={12}>
+          <Grid item xs={ 6 } md={ 10 }>
             <TextField
               htmlFor="input-email"
               fullwidth
@@ -72,7 +72,7 @@ class Login extends React.Component {
               onChange={ this.handleChange }
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={ 6 } md={ 10 }>
             <TextField
               htmlFor="input-password"
               fullwidth
